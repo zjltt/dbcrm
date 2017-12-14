@@ -1,0 +1,19 @@
+.content{
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    height: 200px;
+}
+
+#title{
+    color: #2b542c;
+    padding: 10px;
+}
+
+.mpadding{
+    padding-top: 11px;
+    padding-bottom: 11px;
+}
+.divhead{
+    margin-top: 10%;
+    background: cadetblue;
+}

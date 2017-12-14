@@ -1,0 +1,51 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+</head>
+<body>
+
+<table class="table table-bordered table-striped table-hover">
+        {% csrf_token %}
+        <tr>
+            <th>主机编号</th>
+            <th>主机名</th>
+            <th>端口号</th>
+            <th>业务名称</th>
+            <th>操作</th>
+        </tr>
+        {% for host in all_host_list %}
+            <tr>
+                <td>{{ host.id }}</td>
+                <td>{{ host.hostname }}</td>
+                <td>{{ host.port }}</td>
+                <td><a href="/search_bus_{{ host.busid_id }}">{{ host.busid.businessname }}</a></td>
+            <td>
+                    <button style="background-color: wheat" type="button" class="btn btn-danger btn-group-xs"
+                            name="edit">
+                        <a href="/edit_host_{{ host.id }}">编辑</a>
+                    </button>
+                    <button type="button" style="background-color: wheat;color: blue"
+                            class="btn btn-danger btn-group-xs" name="delete">
+                        删除
+                    </button>
+                </td>
+            </tr>
+{% endfor %}
+
+</table>
+    <div>
+      <nav aria-label="...">
+                <ul class="pager">
+                    {#模板语言中方法不用加括号#}
+                    {{ page_info.page_str|safe }}
+                </ul>
+            </nav>
+        </div>
+</body>
+</html>

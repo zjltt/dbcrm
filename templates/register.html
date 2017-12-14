@@ -1,0 +1,73 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+</head>
+<body>
+<div class="col-md-offset-4 col-md-3" style="margin-top: 10%">
+    <h1 style="text-align: center;font-family: 宋体">添加用户</h1>
+    <form action="/register/" id="f1">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <span>{{ form.username }}</span>
+        </div>
+        <div class="form-group">
+            <label for="pwd">密码</label>
+            {{ form.pwd }}
+        </div>
+        <div class="form-group">
+            <label for="email">邮箱</label>
+            {{ form.email }}
+        </div>
+        <div class="form-group">
+            <input type="button" class="btn-info btn-lg"  value="注册" onclick="addUser();">
+        </div>
+    </form>
+</div>
+
+</body>
+
+<link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+<script src="{% static  "js/jquery-1.11.3.min.js" %}"></script>
+<script src="{% static  "js/bootstrap.min.js" %}"></script>
+
+<script>
+{#    触发一个函数#}
+    function addUser() {
+        $('#f1 .error').remove()
+{#        ajax添加事件#}
+        $.ajax({
+            url: '/register/',
+            type: 'post',
+{#            选择 <form> 标签本身进行序列化#}
+            data: $('#f1').serialize(),
+            dataType: 'JSON',
+            success: function (arg) {
+                if (arg.status) {
+                    location.href = '/register/'
+                } else {
+                    {# 下面这段逻辑用于更新错误信息 #}
+{#                    each() 方法规定为每个匹配元素规定运行的函数 k选择器的 k 位置 v当前的元素}#}
+                    $.each(arg.msg, function (k, v) {
+{#                        触发绑定一个属性#}
+                        var g = document.createElement('f1');
+{#                        innerHTML 属性设置或返回表格行的开始和结束标签之间的#}
+                        g.innerHTML = v[0];
+                        g.className = 'error';
+{#                        为 <div> 元素添加 class#}
+{#                        g.classList.add('text-center');#}
+{#                        修改颜色#}
+                        g.style.color = "red";
+{#                        元素后插入内容#}
+                        $('input[name="' + k + '"]').after(g);
+{#                        console.log(arg.msg)#}
+                    })
+                }
+            }
+        })
+    }
+</script>
+</html>
